@@ -33,47 +33,6 @@ work_experiences = [
     }
 ]
 
-# Data for your education section
-education_history = [
-    {
-        "timeframe": "Jan. 2025",
-        "school": "Washington State University",
-        "degree": "Master of Science in Computer Science (Thesis)",
-        "advisor_link": "https://eecs.wsu.edu/~jana/",
-        "advisor_name": "Janardhan Rao Doppa",
-        "gpa": "3.9",
-        "courses": "Relevant Coursework: Neural Network Design, Big Data Analysis, Reinforcement Learning, Advanced Algorithms"
-    },
-    {
-        "timeframe": "May. 2022",
-        "school": "Amity University",
-        "degree": "Bachelor of Science in Computer Application",
-        "gpa": "3.8",
-        "courses": "Relevant Coursework: Data Structures, Object-Oriented Programming, Database Management Systems, Web Development"
-    }
-]
-
-# Data for your hobbies
-hobbies_list = [
-    {
-        "name": "Photography",
-        "image": "images/hobby_photography.jpg", # Make sure you have this image in static/images
-        "description": "Exploring the world through a lens, capturing moments from landscapes to portraits."
-    },
-    {
-        "name": "Hiking",
-        "image": "images/hobby_hiking.jpg", # Make sure you have this image in static/images
-        "description": "I enjoy hiking through nature trails, discovering new paths and scenic views."
-    },
-    {
-        "name": "Reading",
-        "image": "images/hobby_reading.jpg", # Make sure you have this image in static/images
-        "description": "Diving into books on technology, science fiction, and history to broaden my perspective."
-    }
-]
-
-# --- Routes for your website ---
-
 @app.route('/')
 def index():
     """Renders the main page with your bio, work, and education."""

@@ -43,16 +43,34 @@
     </section>
 
     
-    <section id="experience">
-        <h2>Work Experience</h2>
-        <ul>
-            {% for exp in experiences %}
-            <li>
-            <h3>{{ exp.role }}</h3>
-            <p><strong>{{ exp.company }}</strong> | {{ exp.duration }}</p>
-            </li>
-            {% endfor %}
-        </ul>
-    </section>
+    <div id="works" style="padding-top: 3rem;" class="about-experience-black">
+    <div class="row heading-block" data-aos="fade-up">
+        <div class="column large-full">
+            <h2 class="section-heading" style="color: black;">Work</h2>
+        </div>
+    </div>
+
+    <div class="row about-experience__timeline">
+        <div class="column large-half tab-full" data-aos="fade-up">
+            <div class="timeline-black">
+
+                {% for job in work %}
+                <div class="timeline__block">
+                    <div class="timeline__bullet-black"></div>
+                    <div class="timeline__header">
+                        <p class="timeline__timeframe">{{ job.timeframe }}</p>
+                        <h3 class="item-title-black">{{ job.title }}</h3>
+                        <h5>{{ job.role }}</h5>
+                    </div>
+                    <div class="timeline__desc">
+                        <p>{{ job.description }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
