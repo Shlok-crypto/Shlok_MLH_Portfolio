@@ -1,40 +1,67 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta property="og:title" content="Personal Portfolio">
-    <meta property="og:description" content="My Personal Portfolio">
-    <meta property="og:url" content="{{ url }}">
-
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
-        rel="stylesheet">
-
-    <link lang='sass' rel="stylesheet" href="./static/styles/main.css">
-    <link rel='icon' href='./static/img/favicon.ico' type='image/x-icon' />
-    <title>{{ title }}</title>
-</head>
-
-<body>
-    <header class="nav-bar">
-        <div class="nav-content">
-            <a href="/">
-                <div class="nav-logo">
-                    <img src="./static/img/logo.svg" />
-                </div>
-            </a>
-        </div>
-    </header>
-
+{% block content %}
     <div class="profile">
         <div id="profile-picture" class="profile-picture">
-            <img src="./static/img/logo.jpg">
+            <img src="{{ url_for('static', filename='img/Shlok photo Linkind_Short.jpg') }}">
         </div>
-        <h1>{{ title }}</h1>
+        <h1>Shlok Tomar</h1>
+        <h4>Computer Scientist specializing in AI & Machine Learning</h4>
     </div>
-</body>
-</html>
+
+    <section id="about">
+        <h2>About Me</h2>
+        <p style="max-width: 800px; margin: 0 auto; text-align: center;">
+            I’m a computer science master’s student at Washington State University, specializing in machine learning and AI. I’ve dedicated my academic and professional journey to developing and optimizing high-impact AI models that solve real-world challenges. I am passionate about tech innovation and continuously exploring ways to advance AI's impact on complex problem-solving.
+        </p>
+    </section>
+
+    <section id="education">
+        <h2>Education</h2>
+        <div class="card-container">
+            {% for edu in education %}
+            <div class="card">
+                <h3>{{ edu.degree }}</h3>
+                <h4>{{ edu.university }}</h4>
+                <p class="year">{{ edu.year }}</p>
+                <p>{{ edu.details }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section id="works">
+        <h2>Work Experience</h2>
+        <div class="timeline-container">
+             {% for job in work %}
+            <div class="timeline__block">
+                <div class="timeline__header">
+                    <p class="timeline__timeframe">{{ job.timeframe }}</p>
+                    <h3 class="item-title">{{ job.title }}</h3>
+                    <h5>{{ job.role }}</h5>
+                    <p class="timeline__desc">{{ job.description }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    
+    <section id="map-section">
+        <h2>Places I've Visited</h2>
+        <p>Here are a few of the places I've had the chance to visit.</p>
+        <div id="map"></div>
+    </section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    var map = L.map('map').setView([35, 20], 2);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '© <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+    var pullman = L.marker([46.732, -117.1796]).addTo(map).bindPopup("<b>Pullman, WA</b><br>Home of WSU.");
+    var newDelhi = L.marker([28.6139, 77.2090]).addTo(map).bindPopup("<b>New Delhi, India</b>");
+    var berkeley = L.marker([37.8715, -122.2730]).addTo(map).bindPopup("<b>Berkeley, CA</b><br>Internship.");
+</script>
+{% endblock %}
