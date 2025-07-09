@@ -67,7 +67,7 @@ hobbies_list = [
     },
     {
         "name": "Reading",
-        "image": "img/reading.jpg",
+        "image": "img/reading.jpeg",
         "description": "Diving into books on technology, science fiction, and history to broaden my perspective."
     }
 ]
