@@ -14,7 +14,7 @@
         href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
         rel="stylesheet">
     
-    <!-- *** FIX: Added the Leaflet.js CSS for the interactive map *** -->
+    <!-- Leaflet.js CSS for the interactive map -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
      crossorigin=""/>
@@ -25,13 +25,179 @@
     <title>{{ title }}</title>
 
     <style>
-        /* Add a height and z-index to the map container */
+        /* --- General Body & Typography --- */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4, h5 {
+            font-weight: 500;
+            color: #2c3e50;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid #e0e0e0;
+            display: inline-block;
+        }
+
+        section {
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        section:nth-of-type(odd) {
+            background-color: #ffffff;
+        }
+
+        /* --- Navigation Bar --- */
+        .nav-bar {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .nav-logo img { height: 40px; }
+        .nav-links a {
+            margin-left: 20px;
+            text-decoration: none;
+            color: #555;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover { color: #007bff; }
+
+        /* --- Profile Section --- */
+        .profile {
+            padding-top: 120px; /* Offset for fixed nav */
+            text-align: center;
+            background-color: #fff;
+            padding-bottom: 40px;
+        }
+        .profile-picture img {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            border: 5px solid #fff;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            object-fit: cover;
+        }
+        .profile h1 { font-size: 3rem; margin: 1rem 0 0.5rem; }
+        .profile h4 { font-size: 1.2rem; color: #777; font-weight: 300; }
+
+        /* --- Card Layout (Education & Hobbies) --- */
+        .card-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .card {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            padding: 2rem;
+            text-align: left;
+            flex-basis: 350px; /* Grow to fill space but have a base width */
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        .card h3 { margin-top: 0; }
+        .card .year { font-style: italic; color: #777; }
+
+        .hobby-card img {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        /* --- Timeline (Work Experience) --- */
+        .timeline-container {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 0;
+        }
+        .timeline-container::after { /* The central line */
+            content: '';
+            position: absolute;
+            width: 3px;
+            background-color: #e0e0e0;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -1.5px;
+        }
+        .timeline__block {
+            padding: 1rem 2rem;
+            position: relative;
+            background-color: inherit;
+            width: 50%;
+            text-align: left;
+        }
+        .timeline__block:nth-child(odd) { left: 0; } /* Left side */
+        .timeline__block:nth-child(even) { left: 50%; } /* Right side */
+        
+        .timeline__block::after { /* The circle on the timeline */
+            content: '';
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            right: -8px;
+            background-color: white;
+            border: 3px solid #007bff;
+            top: 25px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+        .timeline__block:nth-child(even)::after { left: -8px; }
+        
+        .timeline__header {
+            background: #fff;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        .timeline__timeframe { font-size: 0.9rem; color: #777; }
+        .item-title { font-size: 1.4rem; margin: 0.5rem 0; }
+        .timeline__desc { display: none; /* Hiding for this simplified layout */ }
+
+        /* --- Map Section --- */
         #map { 
             height: 450px; 
             width: 100%;
+            max-width: 1200px;
+            margin: 1rem auto 0;
             border-radius: 8px;
-            margin-top: 1rem;
-            z-index: 0; /* Ensures map stays in the correct layer */
+            z-index: 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
     </style>
 </head>
@@ -50,7 +216,6 @@
                 <a href="#education">Education</a>
                 <a href="#works">Work</a>
                 <a href="#hobbies">Hobbies</a>
-                <!-- *** FIX: Corrected the link to point to the section ID *** -->
                 <a href="#map-section">Travel Map</a>
             </nav>
         </div>
@@ -67,7 +232,7 @@
     <!-- About Yourself Section -->
     <section id="about">
         <h2>About Me</h2>
-        <p>
+        <p style="max-width: 800px; margin: 0 auto; text-align: center;">
             I’m a computer science master’s student at Washington State University, specializing in machine learning and AI. I’ve dedicated my academic and professional journey to developing and optimizing high-impact AI models that solve real-world challenges. I am passionate about tech innovation and continuously exploring ways to advance AI's impact on complex problem-solving.
         </p>
     </section>
@@ -97,9 +262,7 @@
                     <p class="timeline__timeframe">{{ job.timeframe }}</p>
                     <h3 class="item-title">{{ job.title }}</h3>
                     <h5>{{ job.role }}</h5>
-                </div>
-                <div class="timeline__desc">
-                    <p>{{ job.description }}</p>
+                    <p class="timeline__desc">{{ job.description }}</p>
                 </div>
             </div>
             {% endfor %}
@@ -124,7 +287,6 @@
     <section id="map-section">
         <h2>Places I've Visited</h2>
         <p>Here are a few of the places I've had the chance to visit.</p>
-        <!-- This div is where the map will be rendered -->
         <div id="map"></div>
     </section>
 
@@ -135,29 +297,17 @@
 
     <!-- Custom script to initialize the map and add markers -->
     <script>
-        // Initialize the map and set its view to a central point with a zoom level
-        var map = L.map('map').setView([35, 20], 2); // Centered to show the world
-
-        // Add the OpenStreetMap tiles (the map background)
+        var map = L.map('map').setView([35, 20], 2);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
             attribution: '© <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         }).addTo(map);
-
-        // --- Dummy Locations ---
-
-        // 1. Pullman, WA, USA
         var pullman = L.marker([46.732, -117.1796]).addTo(map);
         pullman.bindPopup("<b>Pullman, WA</b><br>Home of Washington State University.");
-
-        // 2. New Delhi, India
         var newDelhi = L.marker([28.6139, 77.2090]).addTo(map);
         newDelhi.bindPopup("<b>New Delhi, India</b>");
-
-        // 3. Berkeley, CA, USA
         var berkeley = L.marker([37.8715, -122.2730]).addTo(map);
         berkeley.bindPopup("<b>Berkeley, CA</b><br>Where I interned with UC Berkeley & USDA.");
-        
     </script>
 
 </body>
