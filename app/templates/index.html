@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta property="og:title" content="Personal Portfolio">
@@ -13,9 +12,9 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
         rel="stylesheet">
-
-    <link lang='sass' rel="stylesheet" href="./static/styles/main.css">
-    <link rel='icon' href='./static/img/favicon.ico' type='image/x-icon' />
+    
+    <link lang='sass' rel="stylesheet" href="{{ url_for('static', filename='styles/main.css') }}">
+    <link rel='icon' href="{{ url_for('static', filename='img/favicon.ico') }}" type='image/x-icon' />
     <title>{{ title }}</title>
 </head>
 
@@ -24,53 +23,117 @@
         <div class="nav-content">
             <a href="/">
                 <div class="nav-logo">
-                    <img src="./static/img/logo.svg" />
+                    <img src="{{ url_for('static', filename='img/logo.svg') }}" />
                 </div>
             </a>
+            <nav class="nav-links">
+                <a href="#about">About Me</a>
+                <a href="#education">Education</a>
+                <a href="#works">Work</a>
+                <a href="#hobbies">Hobbies</a>
+                <a href="#map">Travel Map</a>
+            </nav>
         </div>
     </header>
 
     <div class="profile">
         <div id="profile-picture" class="profile-picture">
-            <img src="./static/img/Shlok photo Linkind_Short.jpg">
+            <img src="{{ url_for('static', filename='img/Shlok photo Linkind_Short.jpg') }}">
         </div>
-        <h1>{{ title }}</h1>
+        <h1>Shlok Tomar</h1>
+        <h4>Computer Scientist specializing in AI & Machine Learning</h4>
     </div>
 
     <section id="about">
         <h2>About Me</h2>
-        <p>Write a few sentences about yourself here. Talk about your passions, your career goals, and what makes you unique!</p>
+        <p>
+            I’m a computer science master’s student at Washington State University, specializing in machine learning and AI. I’ve dedicated my academic and professional journey to developing and optimizing high-impact AI models that solve real-world challenges. I am passionate about tech innovation and continuously exploring ways to advance AI's impact on complex problem-solving.
+        </p>
     </section>
 
-    
-    <div id="works" style="padding-top: 3rem;" class="about-experience-black">
-    <div class="row heading-block" data-aos="fade-up">
-        <div class="column large-full">
-            <h2 class="section-heading" style="color: black;">Work</h2>
-        </div>
-    </div>
-
-    <div class="row about-experience__timeline">
-        <div class="column large-half tab-full" data-aos="fade-up">
-            <div class="timeline-black">
-
-                {% for job in work %}
-                <div class="timeline__block">
-                    <div class="timeline__bullet-black"></div>
-                    <div class="timeline__header">
-                        <p class="timeline__timeframe">{{ job.timeframe }}</p>
-                        <h3 class="item-title-black">{{ job.title }}</h3>
-                        <h5>{{ job.role }}</h5>
-                    </div>
-                    <div class="timeline__desc">
-                        <p>{{ job.description }}</p>
-                    </div>
-                </div>
-                {% endfor %}
-
+    <section id="education">
+        <h2>Education</h2>
+        <div class="card-container">
+            {% for edu in education %}
+            <div class="card">
+                <h3>{{ edu.degree }}</h3>
+                <h4>{{ edu.university }}</h4>
+                <p class="year">{{ edu.year }}</p>
+                <p>{{ edu.details }}</p>
             </div>
+            {% endfor %}
         </div>
-    </div>
-</div>
+    </section>
+
+    <section id="works">
+        <h2>Work Experience</h2>
+        <div class="timeline-container">
+             {% for job in work %}
+            <div class="timeline__block">
+                <div class="timeline__header">
+                    <p class="timeline__timeframe">{{ job.timeframe }}</p>
+                    <h3 class="item-title">{{ job.title }}</h3>
+                    <h5>{{ job.role }}</h5>
+                </div>
+                <div class="timeline__desc">
+                    <p>{{ job.description }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    
+    <section id="hobbies">
+        <h2>Hobbies</h2>
+        <div class="card-container">
+            {% for hobby in hobbies %}
+            <div class="card hobby-card">
+                <img src="{{ url_for('static', filename=hobby.image) }}" alt="{{ hobby.name }}">
+                <h3>{{ hobby.name }}</h3>
+                <p>{{ hobby.description }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    
+   <!-- Travel Map Section -->
+    <section id="map-section">
+        <h2>Places I've Visited</h2>
+        <p>Here are a few of the places I've had the chance to visit.</p>
+        <!-- This div is where the map will be rendered -->
+        <div id="map"></div>
+    </section>
+
+    <!-- Leaflet.js JavaScript -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+
+    <!-- Custom script to initialize the map and add markers -->
+    <script>
+        // Initialize the map and set its view to a central point with a zoom level
+        var map = L.map('map').setView([35, 20], 2); // Centered to show the world
+
+        // Add the OpenStreetMap tiles (the map background)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+
+        // --- Dummy Locations ---
+
+        // 1. Pullman, WA, USA
+        var pullman = L.marker([46.732, -117.1796]).addTo(map);
+        pullman.bindPopup("<b>Pullman, WA</b><br>Home of Washington State University.");
+
+        // 2. New Delhi, India
+        var newDelhi = L.marker([28.6139, 77.2090]).addTo(map);
+        newDelhi.bindPopup("<b>New Delhi, India</b>");
+
+        // 3. Berkeley, CA, USA
+        var berkeley = L.marker([37.8715, -122.2730]).addTo(map);
+        berkeley.bindPopup("<b>Berkeley, CA</b><br>Where I interned with UC Berkeley & USDA.");
+        
+    </script>
 </body>
 </html>
