@@ -20,7 +20,7 @@ education_history = [
 ]
 
 hobbies_list = [
-    {"name": "Photography", "image": "img/photoHobby.jpg", "description": "Exploring the world through a lens, capturing moments from landscapes to portraits."},
+    {"name": "Photo", "image": "img/photoHobby.jpg", "description": "Exploring the world through a lens, capturing moments from landscapes to portraits."},
     {"name": "Hiking", "image": "img/hiking.jpeg", "description": "I enjoy hiking through nature trails, discovering new paths and scenic views."},
     {"name": "Reading", "image": "img/reading.jpeg", "description": "Diving into books on technology, science fiction, and history to broaden my perspective."}
 ]
