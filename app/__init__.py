@@ -2,9 +2,15 @@ from flask import Flask, render_template, url_for
 import os
 from dotenv import load_dotenv
 from peewee import *
+import datetime
 
 load_dotenv()
-
+# ---- Add these lines for debugging ----
+print("DATABASE:", os.getenv("MYSQL_DATABASE"))
+print("USER:", os.getenv("MYSQL_USER"))
+print("PASSWORD:", os.getenv("MYSQL_PASSWORD"))
+print("HOST:", os.getenv("MYSQL_HOST"))
+# ------------------------------------
 app = Flask(__name__)
 
 # Creating a Database 
@@ -14,6 +20,21 @@ mydb = MySQLDatabase(os.getenv("MYSQL_DATABASE"),
     host=os.getenv("MYSQL_HOST"),
     port=3306
 )
+
+# ---- Creating a ORM model called TimelinePost -----
+
+class TimelinePost(Model):
+    name = CharField()
+    email = CharField()
+    content = TextField()
+    created_at = DateTimeField(default=datetime.datetime.now)
+
+    class Meta:
+        database = mydb
+
+# Connect to the database and create the table
+mydb.connect()
+mydb.create_tables([TimelinePost])
 
 print(mydb)
 
