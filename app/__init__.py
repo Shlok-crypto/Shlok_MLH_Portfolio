@@ -107,5 +107,14 @@ def get_time_line_post():
         ]
     }
 
+@app.route('/api/timeline_post/<int:post_id>', methods=['DELETE'])
+def delete_time_line_post(post_id):
+    try:
+        post = TimelinePost.get(TimelinePost.id == post_id)
+        post.delete_instance()
+        return {"status": "success", "message": "Post deleted successfully."}, 200
+    except TimelinePost.DoesNotExist:
+        return {"status": "error", "message": "Post not found."}, 404
+
 if __name__ == '__main__':
     app.run(debug=True)
