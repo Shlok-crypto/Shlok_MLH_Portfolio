@@ -94,6 +94,7 @@ def post_time_line_post():
         content=content
     )
 
+
     return model_to_dict(timeline_post)
 
 @app.route('/api/timeline_post', methods=['GET'])
