@@ -1,4 +1,8 @@
-version: "3"
+version: "3.9"
+
+networks:
+  myportfolio-net:
+
 services:
   myportfolio:
     container_name: myportfolio
@@ -6,8 +10,11 @@ services:
     restart: always
     env_file:
       - .env
+    networks:
+      - myportfolio-net
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy # <-- This now waits for the healthcheck
 
   mysql:
     container_name: mysql
@@ -17,22 +24,32 @@ services:
       - .env
     volumes:
       - mydatabase:/var/lib/mysql
+    networks:
+      - myportfolio-net
+    healthcheck: # <-- This section is new
+      test: ["CMD", "mariadb-admin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
 
   nginx:
     container_name: nginx
     image: jonasal/nginx-certbot
     restart: always
     environment:
-      - CERTBOT_EMAIL=shloktomar@gmail.com 
+      - CERTBOT_EMAIL=shloktomar65@gmail.com
+      - CERTBOT_DOMAINS=shloktomar.duckdns.org
     ports:
       - "80:80"
       - "443:443"
     volumes:
       - nginx_secrets:/etc/letsencrypt
       - ./user_conf.d:/etc/nginx/user_conf.d
+    networks:
+      - myportfolio-net
     depends_on:
       - myportfolio
 
 volumes:
   mydatabase:
   nginx_secrets:
+
