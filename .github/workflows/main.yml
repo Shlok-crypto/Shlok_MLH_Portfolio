@@ -1,0 +1,45 @@
+# This file defines the GitHub Actions workflow for automatically running tests.
+# It should be saved in your repository at: .github/workflows/main.yml
+
+name: Run Tests
+
+# This section defines when the workflow will run.
+# It will trigger on any push or pull request to the 'main' branch.
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    # This job will run on the latest version of Ubuntu provided by GitHub.
+    runs-on: ubuntu-latest
+    name: Run tests
+    env:
+      TESTING: true
+    steps:
+      # Step 1: Check out the repository code so the workflow can access it.
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # Step 2: Set up the Python environment.
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          # I've updated this to Python 3.9 to match your project.
+          python-version: '3.9'
+
+      # Step 3: Create a virtual environment to isolate dependencies.
+      - name: Setup Python Virtual Environment
+        run: python -m venv python3-virtualenv
+
+      # Step 4: Install the project's dependencies from requirements.txt.
+      - name: Install Dependencies
+        run: python3-virtualenv/bin/pip install -r requirements.txt
+
+      # Step 5: Run the test script.
+      - name: Run Tests
+        run: ./run_test.sh
