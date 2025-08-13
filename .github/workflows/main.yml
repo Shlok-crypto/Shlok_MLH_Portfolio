@@ -40,6 +40,11 @@ jobs:
       - name: Install Dependencies
         run: python3-virtualenv/bin/pip install -r requirements.txt
 
-      # Step 5: Run the test script.
+      # Step 5: Make the test script executable.
+      # This is the new step that fixes the "Permission denied" error.
+      - name: Make script executable
+        run: chmod +x ./run_test.sh
+
+      # Step 6: Run the test script.
       - name: Run Tests
         run: ./run_test.sh
